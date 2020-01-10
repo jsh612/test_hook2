@@ -1,13 +1,11 @@
 import uuid from "uuid/v4";
-
-export const ADD = "add";
-export const DEL = "del";
-export const COMPLETE = "complete";
-export const UNCOMPLETE = "uncomplete";
+import { ADD, DEL, COMPLETE, UNCOMPLETE } from "./actions";
 
 export const initialState = { toDos: [], completed: [] };
 
 const reducer = (state, action) => {
+  // dispatch: reducer에게 입력된 매개변수를 전달(reducer의 action에 할당됨) + reducer 함수 실행
+  // reducer : dispatch의 입력값에 따라 기존 state를 가공하여 새로운 state를 출력하는 역할
   // → action : dispatch에서 쏴준값들이 들어간다
 
   switch (action.type) {
