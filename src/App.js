@@ -1,24 +1,13 @@
 import React, { useReducer, useState } from "react";
-import uuid from "uuid/v4";
-
-const ADD = "add";
-const DEL = "del";
-
-const reducer = (state, action) => {
-  // → action : dispatch에서 쏴준값들이 들어간다
-
-  switch (action.type) {
-    case ADD:
-      return { toDos: [...state.toDos, { text: action.payload, id: uuid() }] };
-    case DEL:
-      return { toDos: state.toDos.filter(toDo => toDo.id !== action.payload) };
-    default:
-      return;
-  }
-};
+import reducer, {
+  initialState,
+  ADD,
+  DEL,
+  COMPLETE,
+  UNCOMPLETE
+} from "./reducer";
 
 function App() {
-  const initialState = { toDos: [] };
   // dispatch: reducer에게 입력된 매개변수를 전달(reducer의 action에 할당됨) + reducer 함수 실행
   // reducer : dispatch의 입력값에 따라 기존 state를 가공하여 새로운 state를 출력하는 역할
 
@@ -54,11 +43,53 @@ function App() {
         {state.toDos.map((toDo, index) => (
           <li key={index}>
             <span>{toDo.text}</span>
-            <button onClick={() => dispatch({ type: DEL, payload: toDo.id })}>
+            <span
+              role="img"
+              aria-label=""
+              onClick={() => dispatch({ type: DEL, payload: toDo.id })}
+            >
               ❌
-            </button>
+            </span>
+            <span
+              role="img"
+              aria-label=""
+              onClick={() => dispatch({ type: COMPLETE, payload: toDo.id })}
+            >
+              ✅
+            </span>
           </li>
         ))}
+      </ul>
+      <ul>
+        {state.completed.length !== 0 && (
+          <>
+            <h2>Completed</h2>
+            {state.completed.map(toDo => {
+              console.log("toDo", toDo);
+              return (
+                <li key={toDo.id}>
+                  <span>{toDo.text}</span>
+                  <span
+                    role="img"
+                    aria-label=""
+                    onClick={() => dispatch({ type: DEL, payload: toDo.id })}
+                  >
+                    ❌
+                  </span>
+                  <span
+                    role="img"
+                    aria-label=""
+                    onClick={() =>
+                      dispatch({ type: UNCOMPLETE, payload: toDo.id })
+                    }
+                  >
+                    🙅🏼‍♂️
+                  </span>
+                </li>
+              );
+            })}
+          </>
+        )}
       </ul>
     </>
   );
